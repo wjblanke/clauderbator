@@ -1,5 +1,5 @@
 // Enlarge a photo to poster size and split it into overlapping printable pieces.
-// usage: swift enlarge.swift <input image> <output> [jpeg]
+// usage: [POSTER_W=in POSTER_H=in] swift enlarge.swift <input image> <output> [jpeg]
 //   default: <output> is a Letter-size PDF (0.25" margins)
 //   jpeg:    <output> is a folder of 4x6" photos at 300 dpi
 import Foundation
@@ -11,7 +11,8 @@ import UniformTypeIdentifiers
 let args = CommandLine.arguments
 let input = URL(fileURLWithPath: args[1]), out = URL(fileURLWithPath: args[2])
 let jpegMode = args.dropFirst(3).contains("jpeg")
-let POSTER_W = 15.16, POSTER_H = 18.95          // inches
+let env = ProcessInfo.processInfo.environment     // poster size in inches, overridable via POSTER_W / POSTER_H
+let POSTER_W = Double(env["POSTER_W"] ?? "") ?? 15.16, POSTER_H = Double(env["POSTER_H"] ?? "") ?? 18.95
 let DPI = 300.0, OV = 0.5                       // print resolution, overlap between neighbouring pieces (inches)
 let PAGE_W = 8.5, PAGE_H = 11.0, M = 0.25       // letter, 0.25" margins (PDF mode)
 

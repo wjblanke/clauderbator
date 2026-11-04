@@ -1,6 +1,10 @@
-import struct, sys, math, zlib
+# usage: python3 rasterbate.py <grid.txt from png2grid.py> <output> [jpeg] [color] [preview]
+#   default: <output> is a Letter-size PDF; jpeg: <output> is a folder of 4x6" photos at 300 dpi
+#   poster size comes from env POSTER_W / POSTER_H (inches); rasterbate.sh sets these for you
+import struct, sys, math, zlib, os
 bmp, out = sys.argv[1], sys.argv[2]
-POSTER_W, POSTER_H = 15.16, 18.95          # inches
+POSTER_W = float(os.environ.get("POSTER_W", "15.16"))   # inches
+POSTER_H = float(os.environ.get("POSTER_H", "18.95"))
 PAGE_W, PAGE_H, M = 8.5, 11.0, 0.25        # letter, 0.25" margins
 args = sys.argv[3:]                         # any of: preview, jpeg, color
 COLOR = "color" in args                     # dots take each cell's original colour instead of black
